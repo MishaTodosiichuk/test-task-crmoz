@@ -34,5 +34,11 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'zoho' => [
+        'client_id' => env('ZOHO_CLIENT_ID'),
+        'client_secret' => env('ZOHO_CLIENT_SECRET'),
+        'refresh_token' => env('ZOHO_REFRESH_TOKEN'),
+        'accounts_url' => env('ZOHO_ACCOUNTS_URL'),
+        'api_base_url' => env('ZOHO_API_BASE_URL'),
+    ]
 ];
