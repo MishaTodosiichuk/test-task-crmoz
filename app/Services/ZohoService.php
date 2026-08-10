@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CacheEnum;
 use App\Exceptions\ZohoException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Cache;
@@ -9,9 +10,6 @@ use Illuminate\Support\Facades\Http;
 
 class ZohoService
 {
-    private const string CACHE_KEY = 'zoho_access_token';
-    private const int TOKEN_BUFFER = 60;
-
     private string $clientId;
     private string $clientSecret;
     private string $refreshToken;
@@ -93,8 +91,8 @@ class ZohoService
 
     private function getAccessToken(): string
     {
-        if (Cache::has(self::CACHE_KEY)) {
-            return Cache::get(self::CACHE_KEY);
+        if (Cache::has(CacheEnum::CACHE_KEY->value)) {
+            return Cache::get(CacheEnum::CACHE_KEY->value);
         }
 
         $response = Http::asForm()
@@ -118,11 +116,11 @@ class ZohoService
 
         $expires = max(
             60,
-            (int) $response->json('expires_in', 3600) - self::TOKEN_BUFFER
+            (int) $response->json('expires_in', 3600) - CacheEnum::TOKEN_BUFFER
         );
 
         Cache::put(
-            self::CACHE_KEY,
+            CacheEnum::CACHE_KEY->value,
             $token,
             now()->addSeconds($expires)
         );
